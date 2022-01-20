@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package example;
+
+option go_package = "cases/;cases";
+
+message Node {
+  string name = 1;
+  Node next = 2;
+}

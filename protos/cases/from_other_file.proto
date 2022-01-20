@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package cases;
+
+option go_package = "cases/;cases";
+
+import "google/type/date.proto";
+
+message YetAnotherTestNestedExternalMessage {
+  string foo = 1;
+  int32 bar = 2;
+  google.type.Date baz = 3;
+}

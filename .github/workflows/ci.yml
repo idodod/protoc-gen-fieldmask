@@ -1,0 +1,32 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - uses: nelonoel/branch-name@v1.0.1
+
+      - uses: earthly/actions/setup-earthly@v1
+        with:
+          version: v0.6.4
+
+      - name: Earthly Version
+        run: earthly --version
+
+      - name: Build
+        env:
+          COMMIT_HASH: ${{ github.sha }}
+          FORCE_COLOR: 1
+        run: earthly -P --ci +all

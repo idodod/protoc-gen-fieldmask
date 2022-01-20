@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package cases;
+
+option go_package = "cases/;cases";
+
+import "cases/from_other_file.proto";
+import "google/protobuf/any.proto";
+import "google/type/date.proto";
+
+enum MyEnum {
+  UNDEFINED = 0;
+  ONE = 1;
+  TWO = 2;
+  THREE = 3;
+}
+
+message TestNestedExternalMessage {
+  string foo = 1;
+  int32 bar = 2;
+}
+
+message Foo {
+  double my_double_field = 1;
+  float my_float_field = 2;
+  int32 my_int_32_field = 3;
+  int64 my_int_64_field = 4;
+  uint32 my_uint_32_field = 5;
+  uint64 my_uint_64_field = 6;
+  sint32 my_sint_32_field = 7;
+  sint64 my_sint_64_field = 8;
+  fixed32 my_fixed_32_field = 9;
+  fixed64 my_fixed_64_field = 10;
+  sfixed32 my_sfixed_32_field = 11;
+  sfixed64 my_sfixed_64_field = 12;
+  bool my_bool_field = 13;
+  string my_string_field = 14;
+  bytes my_bytes_field = 15;
+  MyEnum my_enum_field = 16;
+  google.protobuf.Any my_any_field = 17;
+  oneof my_oneof_field {
+    string option_1 = 18;
+    google.protobuf.Any option_2 = 19;
+  }
+  map<string, string> my_map_field = 20;
+  repeated string my_string_list_field = 21;
+  repeated google.protobuf.Any my_any_list_field = 22;
+  google.type.Date my_date_field = 23;
+  TestNestedExternalMessage my_nested_ext_msg = 24;
+
+  message TestNestedInternalMessage {
+    string foo = 1;
+    int32 bar = 2;
+  }
+
+  TestNestedInternalMessage my_nested_int_msg = 25;
+  YetAnotherTestNestedExternalMessage my_yet_another_test_nested_external_msg = 26;
+}

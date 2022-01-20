@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package thirdpartyimport;
+
+option go_package = "cases/thirdpartyimport;thirdpartyimport";
+
+import "google/type/date.proto";
+
+message FooA {
+  string bar = 1;
+  int32 baz = 2;
+  google.type.Date some_date = 3;
+}

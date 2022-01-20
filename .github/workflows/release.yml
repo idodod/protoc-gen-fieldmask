@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+\.[0-9]+\.[0-9]+'
+
+jobs:
+  release-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - uses: nelonoel/branch-name@v1.0.1
+
+      - uses: earthly/actions/setup-earthly@v1
+        with:
+          version: v0.6.4
+
+      - name: Earthly Version
+        run: earthly --version
+
+      - name: Create Version
+        id: version
+        if: success()
+        run: |
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          # set to output var
+          echo ::set-output name=VERSION::${VERSION}
+
+      - name: Build
+        if: success()
+        env:
+          FORCE_COLOR: 1
+          VERSION: ${{ steps.version.outputs.VERSION }}
+        run: earthly -P --ci --output +all --VERSION=$VERSION
+
+      - name: Upload Release Assets
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload $BRANCH_NAME ./bin/protoc-gen-fieldmask*.zip

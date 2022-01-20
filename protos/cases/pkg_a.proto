@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package casesa;
+
+option go_package = "cases/a;a";
+
+message Foo {
+  string bar = 1;
+  int32 baz = 2;
+}
