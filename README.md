@@ -3,7 +3,7 @@
 [![CI](https://github.com/idodod/protoc-gen-fieldmask/actions/workflows/ci.yml/badge.svg)](https://github.com/idodod/protoc-gen-fieldmask/actions/workflows/ci.yml)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/idodod/protoc-gen-fieldmask)
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/idodod/protoc-gen-fieldmask)
-![GitHub](https://img.shields.io/github/license/idodod/protoc-gen-fieldmask)
+[![License](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
 A protoc plugin that generates fieldmask paths as static type properties for proto messages, which elimantes the usage of error-prone strings.
 
