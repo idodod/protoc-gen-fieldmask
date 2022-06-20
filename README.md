@@ -38,24 +38,29 @@ fieldmasks paths can be used as follows:
 ```golang
   foo := &example.Foo{}
 
-  # Prints "baz"
   fmt.Println(foo.FieldMaskPaths().Baz())
+  // Prints "baz"
   
-  # Prints "xyz"
   fmt.Println(foo.FieldMaskPaths().Xyz())
+  // Prints "xyz"
 
-  # prints "my_bar"
   fmt.Println(foo.FieldMaskPaths().MyBar().String())
+  // Prints "my_bar"
 
-  # since baz is a nested message, we can print a nested path - "my_bar.some_field"
+  // Since baz is a nested message, we can print a nested path:
   fmt.Println(foo.FieldMaskPaths().MyBar().SomeField())
+  // Prints "my_bar.some_field"
 
-  # thirdparty messages work the same way:
-  #print "some_date"
+  // Third party messages work the same way:
   fmt.Println(foo.FieldMaskPaths().SomeDate().String())
+  // Prints "some_date"
 
-  #print "some_date.year"
   fmt.Println(foo.FieldMaskPaths().SomeDate().Year())
+  // Prints "some_date.year"
+  
+  // Full path with message name also available:
+  fmt.Println(foo.FullFieldMaskPaths().MyBar().SomeField())
+  // Prints "foo.my_bar.some_field"
 ```
 
 ## Usage
