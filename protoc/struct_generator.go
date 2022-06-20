@@ -7,6 +7,7 @@ import (
 
 type structGenerator struct {
 	name      string
+	path      string
 	strFields []*protogen.Field
 	msgFields []*protogen.Field
 	maxDepth  uint
@@ -15,6 +16,7 @@ type structGenerator struct {
 func newStructGenerator(message *protogen.Message, maxDepth uint) *structGenerator {
 	return &structGenerator{
 		name:     strcase.ToLowerCamel(string(message.Desc.Parent().FullName())) + message.GoIdent.GoName + structSuffix,
+		path:     string(message.Desc.Parent().FullName()),
 		maxDepth: maxDepth,
 	}
 }

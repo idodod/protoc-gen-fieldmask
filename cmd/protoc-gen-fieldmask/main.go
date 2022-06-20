@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/idodod/protoc-gen-fieldmask/protoc"
+	"github.com/andrey308/protoc-gen-fieldmask/protoc"
 	"google.golang.org/protobuf/compiler/protogen"
 )
 
