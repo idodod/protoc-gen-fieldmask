@@ -68,7 +68,7 @@ test:
     COPY --dir test .
     COPY --dir +test-gen/gen test/.
     RUN go mod vendor
-    RUN go test github.com/idodod/protoc-gen-fieldmask/test
+    RUN go test github.com/andrey308/protoc-gen-fieldmask/test
 
 all:
     BUILD +lint
