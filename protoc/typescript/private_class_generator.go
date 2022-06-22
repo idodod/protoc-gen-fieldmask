@@ -34,14 +34,14 @@ func (x *privateClassGenerator) AddMessageFields(fields ...*protogen.Field) {
 // Generate generates a struct with all fieldmask paths functions for the given type.
 func (x *privateClassGenerator) Generate(g *protogen.GeneratedFile) {
 	// generate fields
-	g.P("class ", x.name, " {")
-	g.P("\t#fieldPath: string;")
-	g.P("\t#prefix: string;")
+	g.P("class ", strcase.ToCamel(x.name), " {")
+	g.P("\tprivate readonly fieldPath: string;")
+	g.P("\tprivate readonly prefix: string;")
 	for _, field := range x.strFields {
-		g.P("\t#", strcase.ToLowerCamel(field.GoName), ": string;")
+		g.P("\tprivate readonly ", strcase.ToLowerCamel(field.GoName), "_: string;")
 	}
 	for _, field := range x.msgFields {
-		g.P("\t#", strcase.ToLowerCamel(field.GoName), ": ", getPrivateClassName(field.Message))
+		g.P("\tprivate readonly ", strcase.ToLowerCamel(field.GoName), "_: ", getPrivateClassName(field.Message))
 	}
 	g.P()
 
@@ -56,26 +56,26 @@ func (x *privateClassGenerator) Generate(g *protogen.GeneratedFile) {
 	g.P("\t\t}")
 	g.P()
 
-	g.P("\t\tthis.#fieldPath = fieldPath;")
-	g.P("\t\tthis.#prefix = prefix;")
+	g.P("\t\tthis.fieldPath = fieldPath;")
+	g.P("\t\tthis.prefix = prefix;")
 	for _, field := range x.strFields {
-		g.P("\t\tthis.#", strcase.ToLowerCamel(field.GoName), " = prefix + \"", field.Desc.Name(), "\";")
+		g.P("\t\tthis.", strcase.ToLowerCamel(field.GoName), "_ = prefix + \"", field.Desc.Name(), "\";")
 	}
 	for _, field := range x.msgFields {
 		fieldStructNewFunction := getPrivateClassName(field.Message)
-		g.P("\t\tthis.#", strcase.ToLowerCamel(field.GoName), " = new ", fieldStructNewFunction, "(prefix + \"", field.Desc.Name(), "\", maxDepth - 1);")
+		g.P("\t\tthis.", strcase.ToLowerCamel(field.GoName), "_ = new ", fieldStructNewFunction, "(prefix + \"", field.Desc.Name(), "\", maxDepth - 1);")
 	}
 	g.P("\t}")
 	g.P()
 
 	// generate receiver methods
-	g.P("\tString(): string { return this.#fieldPath }")
+	g.P("\tstring(): string { return this.fieldPath }")
 	for _, field := range x.strFields {
-		g.P("\t", field.GoName, "(): string { return this.#", strcase.ToLowerCamel(field.GoName), " }")
+		g.P("\t", strcase.ToLowerCamel(field.GoName), "(): string { return this.", strcase.ToLowerCamel(field.GoName), "_ }")
 	}
 	for _, field := range x.msgFields {
 		varName := strcase.ToLowerCamel(field.GoName)
-		g.P("\t", field.GoName, "(): ", getPrivateClassName(field.Message), " { return this.#", varName, " }")
+		g.P("\t", strcase.ToLowerCamel(field.GoName), "(): ", getPrivateClassName(field.Message), " { return this.", varName, "_ }")
 	}
 	g.P("}")
 	g.P()

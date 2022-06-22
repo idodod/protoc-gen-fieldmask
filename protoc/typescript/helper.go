@@ -10,7 +10,7 @@ func getPublicClassName(message *protogen.Message) string {
 }
 
 func getPrivateClassName(message *protogen.Message) string {
-	return strcase.ToLowerCamel(string(message.Desc.Parent().FullName())) + message.GoIdent.GoName + classSuffix
+	return strcase.ToCamel(string(message.Desc.Parent().FullName())) + message.GoIdent.GoName + classSuffix
 }
 
 func getFilePath(f *protogen.File) string {
