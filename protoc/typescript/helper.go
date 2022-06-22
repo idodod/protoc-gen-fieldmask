@@ -14,7 +14,7 @@ func getPrivateClassName(message *protogen.Message) string {
 }
 
 func getFilePath(f *protogen.File) string {
-	return f.GeneratedFilenamePrefix + generatedExtension
+	return string(f.Desc.Name() + generatedExtension)
 }
 
 func getFileHeaderComment(protoFile string) string {
