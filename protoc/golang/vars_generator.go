@@ -1,4 +1,4 @@
-package protoc
+package golang
 
 import (
 	"github.com/iancoleman/strcase"

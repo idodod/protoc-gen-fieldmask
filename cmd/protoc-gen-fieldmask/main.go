@@ -9,7 +9,9 @@ import (
 	"strings"
 
 	"github.com/andrey308/protoc-gen-fieldmask/protoc"
+	"golang.org/x/exp/slices"
 	"google.golang.org/protobuf/compiler/protogen"
+	"google.golang.org/protobuf/types/pluginpb"
 )
 
 const (
@@ -17,7 +19,10 @@ const (
 	defaultLang     = "go"
 )
 
-var version = "dev"
+var (
+	supported = []string{"go", "typescript"}
+	version   = "dev"
+)
 
 func main() {
 	app := filepath.Base(os.Args[0])
@@ -34,12 +39,13 @@ func main() {
 	protogen.Options{
 		ParamFunc: flags.Set,
 	}.Run(func(plugin *protogen.Plugin) error {
-		if strings.ToLower(*lang) != defaultLang {
-			return errors.New("go is the only supported language at the moment")
+		plugin.SupportedFeatures = uint64(pluginpb.CodeGeneratorResponse_FEATURE_PROTO3_OPTIONAL)
+		if !slices.Contains(supported, strings.ToLower(*lang)) {
+			return fmt.Errorf("unsupported lang: %s, supported languages: go, typescript", *lang)
 		}
 		if *maxDepth <= 0 {
 			return errors.New("maxdepth must be bigger than 0")
 		}
-		return protoc.Generate(plugin, *maxDepth)
+		return protoc.Generate[*lang](plugin, *maxDepth)
 	})
 }
