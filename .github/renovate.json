@@ -1,0 +1,14 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "postUpdateOptions": [
+    "gomodTidy"
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["go"],
+      "groupName": "go modulesUpgrades"
+    }
+  ]
+}
