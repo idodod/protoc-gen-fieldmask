@@ -1,4 +1,4 @@
-package protoc
+package golang
 
 import (
 	"google.golang.org/protobuf/compiler/protogen"

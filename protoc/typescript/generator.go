@@ -1,4 +1,4 @@
-package protoc
+package typescript
 
 import (
 	"google.golang.org/protobuf/compiler/protogen"
