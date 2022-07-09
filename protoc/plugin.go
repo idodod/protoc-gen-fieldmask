@@ -8,6 +8,7 @@ import (
 const (
 	generatedExtension = ".pb.fieldmask.go"
 	structSuffix       = "FieldMaskPaths"
+	fullPathSuffix     = "FullFieldMaskPaths"
 )
 
 // Generate will iterate over all given proto files and will generate fieldmask paths functions for each message
@@ -35,22 +36,23 @@ func generateFile(f *protogen.File, plugin *protogen.Plugin, seen map[string]str
 		g.P("package " + f.GoPackageName)
 		g.P("")
 
-		varsGenerator := newVarsGenerator(maxDepth)
-		generators := []generator{varsGenerator}
+		vGenerator := newVarsGenerator(maxDepth)
+		fpGenerator := newFullPathGenerator(maxDepth)
+		generators := []generator{vGenerator, fpGenerator}
 
 		packageName := string(f.GoImportPath)
 		for _, message := range f.Messages {
-			generators = append(generators, generateFieldMaskPaths(g, packageName, message, "", seen, varsGenerator, maxDepth)...)
+			generators = append(generators, generateFieldMaskPaths(g, packageName, message, "", seen, vGenerator, fpGenerator, maxDepth)...)
 		}
 
-		for _, generator := range generators {
-			generator.Generate(g)
+		for _, gen := range generators {
+			gen.Generate(g)
 		}
 	}
 }
 
 // generateFieldMaskPaths generates a FieldMaskPath struct for each proto message which will contain the fieldmask paths
-func generateFieldMaskPaths(g *protogen.GeneratedFile, generatedFileImportPath string, message *protogen.Message, currFieldPath string, seen map[string]struct{}, varsGenerator *varsGenerator, maxDepth uint) []generator {
+func generateFieldMaskPaths(g *protogen.GeneratedFile, generatedFileImportPath string, message *protogen.Message, currFieldPath string, seen map[string]struct{}, varsGenerator *varsGenerator, fpGenerator *fullPathGenerator, maxDepth uint) []generator {
 	if len(message.Fields) == 0 {
 		return nil
 	}
@@ -67,6 +69,7 @@ func generateFieldMaskPaths(g *protogen.GeneratedFile, generatedFileImportPath s
 	// only generate the fieldmask function if the message belongs to the current file's package
 	if string(message.GoIdent.GoImportPath) == generatedFileImportPath {
 		varsGenerator.AddMessage(message)
+		fpGenerator.AddMessage(message)
 		generators = append(generators, msgInterfaceGenerator)
 	}
 	generators = append(generators, msgStructGenerator)
@@ -82,7 +85,7 @@ func generateFieldMaskPaths(g *protogen.GeneratedFile, generatedFileImportPath s
 			if currFieldPath != "" {
 				nextFieldPath = currFieldPath + "." + nextFieldPath
 			}
-			generators = append(generators, generateFieldMaskPaths(g, generatedFileImportPath, field.Message, nextFieldPath, seen, varsGenerator, maxDepth)...)
+			generators = append(generators, generateFieldMaskPaths(g, generatedFileImportPath, field.Message, nextFieldPath, seen, varsGenerator, fpGenerator, maxDepth)...)
 		}
 	}
 	g.P()
