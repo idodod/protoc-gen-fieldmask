@@ -1,4 +1,4 @@
-package protoc
+package typescript
 
 import (
 	"google.golang.org/protobuf/compiler/protogen"
@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	generatedExtension = ".pb.fieldmask.go"
-	structSuffix       = "FieldMaskPaths"
+	generatedExtension = "_pb.fieldmask.ts"
+	classSuffix        = "FieldMaskPaths"
 )
 
 // Generate will iterate over all given proto files and will generate fieldmask paths functions for each message
@@ -32,59 +32,46 @@ func generateFile(f *protogen.File, plugin *protogen.Plugin, seen map[string]str
 	if len(f.Messages) > 0 {
 		g := plugin.NewGeneratedFile(getFilePath(f), f.GoImportPath)
 		g.P(getFileHeaderComment(f.Desc.Path()))
-		g.P("package " + f.GoPackageName)
-		g.P("")
+		g.P()
 
-		varsGenerator := newVarsGenerator(maxDepth)
-		generators := []generator{varsGenerator}
+		pcGenerator := newPublicClassGenerator(maxDepth)
+		generators := []generator{pcGenerator}
 
-		packageName := string(f.GoImportPath)
 		for _, message := range f.Messages {
-			generators = append(generators, generateFieldMaskPaths(g, packageName, message, "", seen, varsGenerator, maxDepth)...)
+			generators = append(generators, generateFieldMaskPaths(g, message, "", seen, pcGenerator, maxDepth)...)
 		}
 
-		for _, generator := range generators {
-			generator.Generate(g)
+		for _, gen := range generators {
+			gen.Generate(g)
 		}
 	}
 }
 
 // generateFieldMaskPaths generates a FieldMaskPath struct for each proto message which will contain the fieldmask paths
-func generateFieldMaskPaths(g *protogen.GeneratedFile, generatedFileImportPath string, message *protogen.Message, currFieldPath string, seen map[string]struct{}, varsGenerator *varsGenerator, maxDepth uint) []generator {
-	if len(message.Fields) == 0 {
-		return nil
-	}
+func generateFieldMaskPaths(g *protogen.GeneratedFile, message *protogen.Message, currFieldPath string, seen map[string]struct{}, publicClassGenerator *publicClassGenerator, maxDepth uint) []generator {
 	messageName := string(message.Desc.FullName())
 	if _, exists := seen[messageName]; exists {
 		return nil
 	}
 	seen[messageName] = struct{}{}
 
-	msgStructGenerator := newStructGenerator(message, maxDepth)
-	msgInterfaceGenerator := newInterfaceGenerator(message)
+	privateClGenerator := newPrivateClassGenerator(message, maxDepth)
 
 	var generators []generator
-	// only generate the fieldmask function if the message belongs to the current file's package
-	if string(message.GoIdent.GoImportPath) == generatedFileImportPath {
-		varsGenerator.AddMessage(message)
-		generators = append(generators, msgInterfaceGenerator)
-	}
-	generators = append(generators, msgStructGenerator)
+	generators = append(generators, privateClGenerator)
+	publicClassGenerator.AddMessage(message)
 
 	for _, field := range message.Fields {
 		if (field.Desc.Kind() != protoreflect.MessageKind && field.Desc.Kind() != protoreflect.GroupKind) || field.Desc.IsList() || field.Desc.IsMap() {
-			msgInterfaceGenerator.AddStringFields(field)
-			msgStructGenerator.AddStringFields(field)
+			privateClGenerator.AddStringFields(field)
 		} else {
-			msgInterfaceGenerator.AddMessageFields(field)
-			msgStructGenerator.AddMessageFields(field)
+			privateClGenerator.AddMessageFields(field)
 			nextFieldPath := string(field.Desc.Name())
 			if currFieldPath != "" {
 				nextFieldPath = currFieldPath + "." + nextFieldPath
 			}
-			generators = append(generators, generateFieldMaskPaths(g, generatedFileImportPath, field.Message, nextFieldPath, seen, varsGenerator, maxDepth)...)
+			generators = append(generators, generateFieldMaskPaths(g, field.Message, nextFieldPath, seen, publicClassGenerator, maxDepth)...)
 		}
 	}
-	g.P()
 	return generators
 }

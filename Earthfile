@@ -1,8 +1,8 @@
 VERSION 0.6
 
 ARG ALPINE_VERSION=3.15
-ARG GO_VERSION=1.17
-ARG LINTER_VERSION=v1.43.0
+ARG GO_VERSION=1.18
+ARG LINTER_VERSION=v1.46.2
 FROM golang:$GO_VERSION-alpine$ALPINE_VERSION
 WORKDIR /app
 
@@ -68,7 +68,7 @@ test:
     COPY --dir test .
     COPY --dir +test-gen/gen test/.
     RUN go mod vendor
-    RUN go test github.com/idodod/protoc-gen-fieldmask/test
+    RUN go test github.com/andrey308/protoc-gen-fieldmask/test
 
 all:
     BUILD +lint

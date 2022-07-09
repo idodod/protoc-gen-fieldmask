@@ -33,29 +33,43 @@ message Bar {
 }
 ```
 
-fieldmasks paths can be used as follows:
+For Golang fieldMasks paths can be used as follows:
 
 ```golang
   foo := &example.Foo{}
 
-  # Prints "baz"
   fmt.Println(foo.FieldMaskPaths().Baz())
+  // Prints "baz"
   
-  # Prints "xyz"
   fmt.Println(foo.FieldMaskPaths().Xyz())
+  // Prints "xyz"
 
-  # prints "my_bar"
   fmt.Println(foo.FieldMaskPaths().MyBar().String())
+  // Prints "my_bar"
 
-  # since baz is a nested message, we can print a nested path - "my_bar.some_field"
+  // Since baz is a nested message, we can print a nested path:
   fmt.Println(foo.FieldMaskPaths().MyBar().SomeField())
+  // Prints "my_bar.some_field"
 
-  # thirdparty messages work the same way:
-  #print "some_date"
+  // Third party messages work the same way:
   fmt.Println(foo.FieldMaskPaths().SomeDate().String())
+  // Prints "some_date"
 
-  #print "some_date.year"
   fmt.Println(foo.FieldMaskPaths().SomeDate().Year())
+  // Prints "some_date.year"
+  
+  // Full path with message name also available:
+  fmt.Println(foo.FullFieldMaskPaths().MyBar().SomeField())
+  // Prints "foo.my_bar.some_field"
+```
+
+For TypeScript:
+
+```typescript
+let foo = new FooFieldMaskPaths();
+
+console.log(foo.fullFieldMaskPaths().MyBar().SomeField())
+// Prints "foo.my_bar.some_field"
 ```
 
 ## Usage
@@ -67,7 +81,8 @@ The plugin can be downloaded from the [release page](https://github.com/idodod/p
 ### Executing the plugin
 
 ```sh
-protoc --fieldmask_out=gen protos/example.proto
+protoc --fieldmask_out=out_dir protos/example.proto
+protoc --fieldmask_out=out_dir --fieldmask_opt=lang=typescript protos/example.proto
 
 # if the plugin is not in your $PATH:
 protoc --fieldmask_out=out_dir protos/example.proto --plugin=protoc-gen-fieldmask=/path/to/protoc-gen-fieldmask
@@ -77,12 +92,14 @@ protoc --fieldmask_out=out_dir protos/example.proto --plugin=protoc-gen-fieldmas
 
 The following parameters can be set by passing `--fieldmask_opt` to the command:
 
-*   `maxdepth`: This option is relevant for a recursive message case.\
+* `lang`: Language to generate. Supported variants: `go`, `typescript`. Default - `go`.
+
+* `maxdepth`: This option is relevant for a recursive message case.\
     Specify the max depth for which the paths will be pregenerated. If the path depth gets over the max value, it will be generated at runtime.
     default value is `7`.
 
 ## Features
 
-*   Currently the only supported language is `go`.
+*   Currently, supported languages are only `go` and `TypeScript`.
 *   All paths are pregenerated (except for recursive messages past `maxdepth`).
 *   Support all type of fields including repeated fields, maps, oneofs, third parties, nested messages and recursive messages.
