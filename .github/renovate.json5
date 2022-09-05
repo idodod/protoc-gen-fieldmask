@@ -57,8 +57,7 @@
       ],
       depNameTemplate: "namely/protoc-all",
       datasourceTemplate: "docker",
-      versioningTemplate: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)_(?<patch>\\d+)$",
-      ""
+      versioningTemplate: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)_(?<patch>\\d+)$"
     },
     {
       fileMatch: [
