@@ -20,7 +20,7 @@
         "Earthfile$"
       ],
       matchStrings: [
-        "GO_VERSION=(?<currentValue>.*?)\\}\\n",
+        "GO_VERSION=(?<currentValue>.*?)\\n",
         "constraints: {(\\s*\\n\\s*)\"go\":\\s*\"(?<currentValue>.*?)\"",
         "ARG go_version=(?<currentValue>.*?)\\n"
       ],
