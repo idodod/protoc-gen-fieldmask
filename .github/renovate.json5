@@ -47,6 +47,27 @@
       ],
       depNameTemplate: "golangci/golangci-lint",
       datasourceTemplate: "github-releases"
+    },
+    {
+      fileMatch: [
+        "Earthfile$"
+      ],
+      matchStrings: [
+        "ARG DOCKER_PROTOC_VERSION=(?<currentValue>.*?)\\n"
+      ],
+      depNameTemplate: "namely/protoc-all",
+      datasourceTemplate: "docker"
+    },
+    {
+      fileMatch: [
+        ".github/workflows/ci.yml$",
+        ".github/workflows/release.yml$"
+      ],
+      matchStrings: [
+        "version: (?<currentValue>.*?)\\n"
+      ],
+      depNameTemplate: "earthly/earthly",
+      datasourceTemplate: "github-releases"
     }
   ],
   packageRules: [
