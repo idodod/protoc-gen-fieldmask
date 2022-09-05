@@ -1,0 +1,58 @@
+{
+  constraints: {
+    "go": "1.17"
+  },
+  extends: [
+    "config:base"
+  ],
+  enabledManagers: [
+    "regex", 
+    "github-actions",
+    "gomod"
+  ],
+  postUpdateOptions: [
+    "gomodTidy"
+  ],
+  regexManagers: [
+    {
+      fileMatch: [ 
+        ".github/renovate.json5$",
+        "Earthfile$"
+      ],
+      matchStrings: [
+        "GO_VERSION=(?<currentValue>.*?)\\}\\n",
+        "constraints: {(\\s*\\n\\s*)\"go\":\\s*\"(?<currentValue>.*?)\"",
+        "ARG go_version=(?<currentValue>.*?)\\n"
+      ],
+      depNameTemplate: "go",
+      datasourceTemplate: "golang-version",
+      versioningTemplate: "npm",
+    },
+    {
+      fileMatch: [
+        "Earthfile$"
+      ],
+      matchStrings: [
+        "ARG ALPINE_VERSION=(?<currentValue>.*?)\\n"
+      ],
+      depNameTemplate: "alpine",
+      datasourceTemplate: "docker"
+    },
+    {
+      fileMatch: [
+        "Earthfile$"
+      ],
+      matchStrings: [
+        "ARG LINTER_VERSION=(?<currentValue>.*?)\\n"
+      ],
+      depNameTemplate: "golangci/golangci-lint",
+      datasourceTemplate: "github-releases"
+    }
+  ],
+  packageRules: [
+    {
+      matchDatasources: ["go"],
+      groupName: "go modulesUpgrades"
+    }
+  ]
+}
