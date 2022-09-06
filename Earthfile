@@ -52,7 +52,7 @@ build-all:
     SAVE ARTIFACT /artifacts AS LOCAL bin
 
 test-gen:
-    ARG DOCKER_PROTOC_VERSION=1.42_0  
+    ARG DOCKER_PROTOC_VERSION=1.42_0
     FROM namely/protoc-all:$DOCKER_PROTOC_VERSION
     RUN mkdir /plugins
     COPY +build/protoc-gen-fieldmask /usr/local/bin/.
