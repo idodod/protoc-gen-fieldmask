@@ -1,8 +1,8 @@
 VERSION 0.6
 
-ARG ALPINE_VERSION=3.15
-ARG GO_VERSION=1.17
-ARG LINTER_VERSION=v1.43.0
+ARG ALPINE_VERSION=3.16
+ARG GO_VERSION=1.19
+ARG LINTER_VERSION=v1.49.0
 FROM golang:$GO_VERSION-alpine$ALPINE_VERSION
 WORKDIR /app
 
@@ -52,7 +52,7 @@ build-all:
     SAVE ARTIFACT /artifacts AS LOCAL bin
 
 test-gen:
-    ARG DOCKER_PROTOC_VERSION=1.42_0  
+    ARG DOCKER_PROTOC_VERSION=1.48_2
     FROM namely/protoc-all:$DOCKER_PROTOC_VERSION
     RUN mkdir /plugins
     COPY +build/protoc-gen-fieldmask /usr/local/bin/.
