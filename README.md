@@ -38,23 +38,23 @@ fieldmasks paths can be used as follows:
 ```golang
   foo := &example.Foo{}
 
-  # Prints "baz"
+  // Prints "baz"
   fmt.Println(foo.FieldMaskPaths().Baz())
   
-  # Prints "xyz"
+  // Prints "xyz"
   fmt.Println(foo.FieldMaskPaths().Xyz())
 
-  # prints "my_bar"
+  // Prints "my_bar"
   fmt.Println(foo.FieldMaskPaths().MyBar().String())
 
-  # since baz is a nested message, we can print a nested path - "my_bar.some_field"
+  // Since baz is a nested message, we can print a nested path - "my_bar.some_field"
   fmt.Println(foo.FieldMaskPaths().MyBar().SomeField())
 
-  # thirdparty messages work the same way:
-  #print "some_date"
+  // Thirdparty messages work the same way:
+  // Prints "some_date"
   fmt.Println(foo.FieldMaskPaths().SomeDate().String())
 
-  #print "some_date.year"
+  // Prints "some_date.year"
   fmt.Println(foo.FieldMaskPaths().SomeDate().Year())
 ```
 
@@ -69,7 +69,7 @@ The plugin can be downloaded from the [release page](https://github.com/idodod/p
 ```sh
 protoc --fieldmask_out=gen protos/example.proto
 
-# if the plugin is not in your $PATH:
+# If the plugin is not in your $PATH:
 protoc --fieldmask_out=out_dir protos/example.proto --plugin=protoc-gen-fieldmask=/path/to/protoc-gen-fieldmask
 ```
 

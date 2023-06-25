@@ -1,4 +1,4 @@
-VERSION 0.6
+VERSION 0.7
 
 ARG ALPINE_VERSION=3.18
 ARG GO_VERSION=1.20
@@ -20,7 +20,7 @@ lint:
     # Installs golangci-lint to ./bin
     RUN wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s $LINTER_VERSION
     COPY +stage/app .
-    RUN ./bin/golangci-lint run --skip-dirs=vendor --skip-dirs=./gen/ --deadline=5m --tests=true -E revive \
+    RUN ./bin/golangci-lint run --skip-dirs=vendor --skip-dirs=./gen/ --deadline=10m --tests=true -E revive \
       -E gosec -E unconvert -E goconst -E gocyclo -E goimports
 
 build:
