@@ -1,6 +1,6 @@
 {
   constraints: {
-    "go": "1.21"
+    go: '1.21',
   },
   extends: [
     'config:recommended',
@@ -8,75 +8,82 @@
   ],
   configMigration: true,
   enabledManagers: [
-    "regex", 
-    "github-actions",
-    "gomod"
+    'regex',
+    'github-actions',
+    'gomod',
   ],
   postUpdateOptions: [
-    "gomodTidy"
+    'gomodTidy',
   ],
   regexManagers: [
     {
-      fileMatch: [ 
-        ".github/renovate.json5$",
-        "Earthfile$"
+      customType: 'regex',
+      fileMatch: [
+        '.github/renovate.json5$',
+        'Earthfile$',
       ],
       matchStrings: [
-        "GO_VERSION=(?<currentValue>.*?)\\n",
-        "constraints: {(\\s*\\n\\s*)\"go\":\\s*\"(?<currentValue>.*?)\"",
-        "ARG go_version=(?<currentValue>.*?)\\n"
+        'GO_VERSION=(?<currentValue>.*?)\\n',
+        'constraints: {(\\s*\\n\\s*)"go":\\s*"(?<currentValue>.*?)"',
+        'ARG go_version=(?<currentValue>.*?)\\n',
       ],
-      depNameTemplate: "go",
-      datasourceTemplate: "golang-version",
-      versioningTemplate: "npm",
+      depNameTemplate: 'go',
+      datasourceTemplate: 'golang-version',
+      versioningTemplate: 'npm',
     },
     {
+      customType: 'regex',
       fileMatch: [
-        "Earthfile$"
+        'Earthfile$',
       ],
       matchStrings: [
-        "ARG ALPINE_VERSION=(?<currentValue>.*?)\\n"
+        'ARG ALPINE_VERSION=(?<currentValue>.*?)\\n',
       ],
-      depNameTemplate: "alpine",
-      datasourceTemplate: "docker"
+      depNameTemplate: 'alpine',
+      datasourceTemplate: 'docker',
     },
     {
+      customType: 'regex',
       fileMatch: [
-        "Earthfile$"
+        'Earthfile$',
       ],
       matchStrings: [
-        "ARG LINTER_VERSION=(?<currentValue>.*?)\\n"
+        'ARG LINTER_VERSION=(?<currentValue>.*?)\\n',
       ],
-      depNameTemplate: "golangci/golangci-lint",
-      datasourceTemplate: "github-releases"
+      depNameTemplate: 'golangci/golangci-lint',
+      datasourceTemplate: 'github-releases',
     },
     {
+      customType: 'regex',
       fileMatch: [
-        "Earthfile$"
+        'Earthfile$',
       ],
       matchStrings: [
-        "ARG DOCKER_PROTOC_VERSION=(?<currentValue>.*?)\\n"
+        'ARG DOCKER_PROTOC_VERSION=(?<currentValue>.*?)\\n',
       ],
-      depNameTemplate: "namely/protoc-all",
-      datasourceTemplate: "docker",
-      versioningTemplate: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)_(?<patch>\\d+)$"
+      depNameTemplate: 'namely/protoc-all',
+      datasourceTemplate: 'docker',
+      versioningTemplate: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)_(?<patch>\\d+)$',
     },
     {
+      customType: 'regex',
       fileMatch: [
-        ".github/workflows/ci.yml$",
-        ".github/workflows/release.yml$"
+        '.github/workflows/ci.yml$',
+        '.github/workflows/release.yml$',
       ],
       matchStrings: [
-        "version: (?<currentValue>.*?)\\n"
+        'version: (?<currentValue>.*?)\\n',
       ],
-      depNameTemplate: "earthly/earthly",
-      datasourceTemplate: "github-releases"
-    }
+      depNameTemplate: 'earthly/earthly',
+      datasourceTemplate: 'github-releases',
+    },
   ],
   packageRules: [
     {
-      matchDatasources: ["go"],
-      groupName: "go modulesUpgrades"
-    }
-  ]
+      matchDatasources: [
+        'go',
+      ],
+      groupName: 'go modulesUpgrades',
+    },
+  ],
 }
