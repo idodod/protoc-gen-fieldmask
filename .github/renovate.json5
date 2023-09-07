@@ -3,8 +3,10 @@
     "go": "1.21"
   },
   extends: [
-    "config:base"
+    'config:recommended',
+    'default:pinDigestsDisabled',
   ],
+  configMigration: true,
   enabledManagers: [
     "regex", 
     "github-actions",
