@@ -22,7 +22,8 @@ jobs:
             branch="${GITHUB_REF##*/}"
           fi
           git branch
-          git checkout -b "$branch"
+          git checkout -b "$branch" || true
+          git branch
 
       - uses: nelonoel/branch-name@v1.0.1
 
