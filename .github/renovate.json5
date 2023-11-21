@@ -8,7 +8,7 @@
   ],
   configMigration: true,
   enabledManagers: [
-    'regex',
+    'custom.regex',
     'github-actions',
     'gomod',
   ],
