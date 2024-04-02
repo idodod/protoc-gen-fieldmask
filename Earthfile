@@ -1,8 +1,8 @@
-VERSION 0.6
+VERSION 0.7
 
-ARG ALPINE_VERSION=3.16
-ARG GO_VERSION=1.19
-ARG LINTER_VERSION=v1.49.0
+ARG ALPINE_VERSION=3.18
+ARG GO_VERSION=1.21
+ARG LINTER_VERSION=v1.56.2
 FROM golang:$GO_VERSION-alpine$ALPINE_VERSION
 WORKDIR /app
 
@@ -20,7 +20,7 @@ lint:
     # Installs golangci-lint to ./bin
     RUN wget -O- -nv https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s $LINTER_VERSION
     COPY +stage/app .
-    RUN ./bin/golangci-lint run --skip-dirs=vendor --skip-dirs=./gen/ --deadline=5m --tests=true -E revive \
+    RUN ./bin/golangci-lint run --skip-dirs=vendor --skip-dirs=./gen/ --deadline=10m --tests=true -E revive \
       -E gosec -E unconvert -E goconst -E gocyclo -E goimports
 
 build:
@@ -52,7 +52,7 @@ build-all:
     SAVE ARTIFACT /artifacts AS LOCAL bin
 
 test-gen:
-    ARG DOCKER_PROTOC_VERSION=1.49_0
+    ARG DOCKER_PROTOC_VERSION=1.51_2
     FROM namely/protoc-all:$DOCKER_PROTOC_VERSION
     RUN mkdir /plugins
     COPY +build/protoc-gen-fieldmask /usr/local/bin/.
