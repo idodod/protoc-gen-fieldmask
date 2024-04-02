@@ -91,3 +91,9 @@ message TestReservedGoFieldNames {
   string type = 25;
   string var = 26;
 }
+
+message EmptyMessage {}
+
+message TestMessageWithEmptyMessage {
+  EmptyMessage empty = 1;
+}

@@ -37,6 +37,7 @@ func (s *TestSuite) TestTypes() {
 		"an internal nested message also gets fieldmasks when it's a parent message":                       {msg: &cases.Foo_TestNestedInternalMessage{}},
 		"an external nested message from another file also gets fieldmasks when it's a parent message":     {msg: &cases.YetAnotherTestNestedExternalMessage{}},
 		"a message with reserved go field names works":                                                     {msg: &cases.TestReservedGoFieldNames{}},
+		"a message with field that is an empty message works":                                              {msg: &cases.TestMessageWithEmptyMessage{}},
 		"messages with the same name and a different package get fieldmasks (a.Foo, 1/2)":                  {msg: &a.Foo{}},
 		"messages with the same name and a different package get fieldmasks (b.Foo, 2/2)":                  {msg: &b.Foo{}},
 		"messages from different proto files, in the same package can get fieldmask for 3rd-parties (1/2)": {msg: &thirdpartyimport.FooA{}},
