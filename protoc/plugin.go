@@ -51,9 +51,6 @@ func generateFile(f *protogen.File, plugin *protogen.Plugin, seen map[string]str
 
 // generateFieldMaskPaths generates a FieldMaskPath struct for each proto message which will contain the fieldmask paths
 func generateFieldMaskPaths(g *protogen.GeneratedFile, generatedFileImportPath string, message *protogen.Message, currFieldPath string, seen map[string]struct{}, varsGenerator *varsGenerator, maxDepth uint) []generator {
-	if len(message.Fields) == 0 {
-		return nil
-	}
 	messageName := string(message.Desc.FullName())
 	if _, exists := seen[messageName]; exists {
 		return nil
