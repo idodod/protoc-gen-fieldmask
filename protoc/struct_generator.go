@@ -36,10 +36,10 @@ func (x *structGenerator) Generate(g *protogen.GeneratedFile) {
 	g.P("fieldPath string")
 	g.P("prefix string")
 	for _, field := range x.strFields {
-		g.P(strcase.ToLowerCamel(field.GoName), " string")
+		g.P(strcase.ToLowerCamel(field.GoName)+"_", " string")
 	}
 	for _, field := range x.msgFields {
-		g.P(strcase.ToLowerCamel(field.GoName), " *", getStructName(field.Message))
+		g.P(strcase.ToLowerCamel(field.GoName)+"_", " *", getStructName(field.Message))
 	}
 	g.P("}")
 	g.P()
@@ -57,11 +57,11 @@ func (x *structGenerator) Generate(g *protogen.GeneratedFile) {
 	g.P("fieldPath: fieldPath,")
 	g.P("prefix: prefix,")
 	for _, field := range x.strFields {
-		g.P(strcase.ToLowerCamel(field.GoName), ": prefix + \"", field.Desc.Name(), "\",")
+		g.P(strcase.ToLowerCamel(field.GoName)+"_", ": prefix + \"", field.Desc.Name(), "\",")
 	}
 	for _, field := range x.msgFields {
 		fieldStructNewFunction := getStructNewFunction(field.Message)
-		g.P(strcase.ToLowerCamel(field.GoName), ": ", fieldStructNewFunction, "(prefix + \"", field.Desc.Name(), "\", maxDepth - 1),")
+		g.P(strcase.ToLowerCamel(field.GoName)+"_", ": ", fieldStructNewFunction, "(prefix + \"", field.Desc.Name(), "\", maxDepth - 1),")
 	}
 	g.P("}")
 	g.P("}")
@@ -70,10 +70,10 @@ func (x *structGenerator) Generate(g *protogen.GeneratedFile) {
 	// generate receiver methods
 	g.P("func (x *", x.name, ") String() string { return x.fieldPath }")
 	for _, field := range x.strFields {
-		g.P("func (x *", x.name, ") ", field.GoName, "() string { return x.", strcase.ToLowerCamel(field.GoName), "}")
+		g.P("func (x *", x.name, ") ", field.GoName, "() string { return x.", strcase.ToLowerCamel(field.GoName)+"_", "}")
 	}
 	for _, field := range x.msgFields {
-		varName := strcase.ToLowerCamel(field.GoName)
+		varName := strcase.ToLowerCamel(field.GoName) + "_"
 		fieldStructNewFunction := getStructNewFunction(field.Message)
 		g.P("func (x *", x.name, ") ", field.GoName, "() *", getStructName(field.Message), " {")
 		g.P("if x.", varName, "!= nil {")
