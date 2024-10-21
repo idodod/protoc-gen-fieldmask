@@ -5,8 +5,8 @@ go 1.22
 require (
 	github.com/iancoleman/strcase v0.3.0
 	github.com/stretchr/testify v1.9.0
-	google.golang.org/genproto v0.0.0-20240429193739-8cf5692501f6
-	google.golang.org/protobuf v1.34.0
+	google.golang.org/genproto 324edc3d5d38
+	google.golang.org/protobuf v1.35.1
 )
 
 require (
