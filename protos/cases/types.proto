@@ -56,3 +56,44 @@ message Foo {
   TestNestedInternalMessage my_nested_int_msg = 25;
   YetAnotherTestNestedExternalMessage my_yet_another_test_nested_external_msg = 26;
 }
+
+message TestReservedGoFieldNames {
+  // These fields are reserved Go field names and should be escaped.
+  // copied from https://golang.org/ref/spec#Keywords
+  
+  string break = 2;
+  string case = 3;
+  string chan = 4;
+  string const = 5;
+  string continue = 6;
+
+  string default = 7;
+  string defer = 8;
+  string else = 9;
+  string fallthrough = 10;
+  string for = 11;
+
+  string func = 12;
+  string go = 13;
+  string goto = 14;
+  string if = 15;
+  string import = 16;
+
+  string interface = 17;
+  string map = 18;
+  string package = 19;
+  string range = 20;
+  string return = 21;
+
+  string select = 22;
+  string struct = 23;
+  string switch = 24;
+  string type = 25;
+  string var = 26;
+}
+
+message EmptyMessage {}
+
+message TestMessageWithEmptyMessage {
+  EmptyMessage empty = 1;
+}
