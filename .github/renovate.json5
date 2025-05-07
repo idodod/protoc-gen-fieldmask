@@ -18,9 +18,9 @@
   customManagers: [
     {
       customType: 'regex',
-      fileMatch: [
-        '.github/renovate.json5$',
-        'Earthfile$',
+      managerFilePatterns: [
+        '/.github/renovate.json5$/',
+        '/Earthfile$/',
       ],
       matchStrings: [
         'GO_VERSION=(?<currentValue>.*?)\\n',
@@ -33,8 +33,8 @@
     },
     {
       customType: 'regex',
-      fileMatch: [
-        'Earthfile$',
+      managerFilePatterns: [
+        '/Earthfile$/',
       ],
       matchStrings: [
         'ARG ALPINE_VERSION=(?<currentValue>.*?)\\n',
@@ -44,8 +44,8 @@
     },
     {
       customType: 'regex',
-      fileMatch: [
-        'Earthfile$',
+      managerFilePatterns: [
+        '/Earthfile$/',
       ],
       matchStrings: [
         'ARG LINTER_VERSION=(?<currentValue>.*?)\\n',
@@ -55,8 +55,8 @@
     },
     {
       customType: 'regex',
-      fileMatch: [
-        'Earthfile$',
+      managerFilePatterns: [
+        '/Earthfile$/',
       ],
       matchStrings: [
         'ARG DOCKER_PROTOC_VERSION=(?<currentValue>.*?)\\n',
@@ -67,9 +67,9 @@
     },
     {
       customType: 'regex',
-      fileMatch: [
-        '.github/workflows/ci.yml$',
-        '.github/workflows/release.yml$',
+      managerFilePatterns: [
+        '/.github/workflows/ci.yml$/',
+        '/.github/workflows/release.yml$/',
       ],
       matchStrings: [
         'version: (?<currentValue>.*?)\\n',
